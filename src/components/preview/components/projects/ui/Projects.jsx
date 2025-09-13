@@ -3,6 +3,8 @@ import DateRange from "../../../../utility/DateRange";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import {ResumeContext} from "../../../../builder";
+import { translations } from "../../../../utility/translations";
+import { useLanguage } from "../../../../../hooks/useLanguage";
 
 const Droppable = dynamic(
   () => import("react-beautiful-dnd").then((mod) => mod.Droppable),
@@ -15,6 +17,7 @@ const Draggable = dynamic(
 
 const Projects = () => {
   const {resumeData} = useContext(ResumeContext);
+  const { language } = useLanguage();
   return (
     <Droppable droppableId="projects" type="PROJECTS">
       {(provided) => (
@@ -24,7 +27,7 @@ const Projects = () => {
             contentEditable
             suppressContentEditableWarning
           >
-            Projects
+            {translations[language].projects}
           </h2>
           {resumeData.projects.map((item, index) => (
             <Draggable

@@ -2,6 +2,8 @@ import Skills from "../components/Skills";
 import DateRange from "../../utility/DateRange";
 import Language from "../components/Language";
 import Certification from "../components/Certification";
+import { translations } from "../../utility/translations";
+import { useLanguage } from "../../../hooks/useLanguage";
 import dynamic from "next/dynamic";
 import React, { useContext } from "react";
 import { ResumeContext } from "../../builder";
@@ -17,6 +19,7 @@ const Draggable = dynamic(
 
 const LeftSide = ({ resumeData }) => {
   const { setResumeData } = useContext(ResumeContext);
+  const { language } = useLanguage();
 
   const handleSummaryChange = (e) => {
     setResumeData({ ...resumeData, summary: e.target.innerText });
@@ -30,7 +33,7 @@ const LeftSide = ({ resumeData }) => {
               contentEditable
               suppressContentEditableWarning
           >
-            Summary
+            {translations[language].summary}
           </h2>
           <p className="content break-words editable"
              contentEditable
@@ -48,7 +51,7 @@ const LeftSide = ({ resumeData }) => {
               contentEditable
               suppressContentEditableWarning
           >
-            Education
+            {translations[language].education}
           </h2>
           {resumeData.education.map((item, index) => (
             <div key={index} className="mb-1">
@@ -93,9 +96,9 @@ const LeftSide = ({ resumeData }) => {
         )}
       </Droppable>
 
-      <Language title="Languages" languages={resumeData.languages} />
+      <Language title={translations[language].languages} languages={resumeData.languages} />
       <Certification
-        title="Certifications"
+        title={translations[language].certifications}
         certifications={resumeData.certifications}
       />
     </div>
