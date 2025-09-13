@@ -2,7 +2,15 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import usePrintMode from '../../hooks/usePrintMode';
 
 // Print-safe Droppable wrapper
-export const PrintSafeDroppable = ({ droppableId, children, className = "", ...props }) => {
+export const PrintSafeDroppable = ({ 
+  droppableId, 
+  children, 
+  className = "", 
+  isDropDisabled = false, 
+  isCombineEnabled = false,
+  ignoreContainerClipping = false,
+  ...props 
+}) => {
   const isPrintMode = usePrintMode();
 
   if (isPrintMode) {
@@ -20,7 +28,12 @@ export const PrintSafeDroppable = ({ droppableId, children, className = "", ...p
 
   // Render normal Droppable in edit mode
   return (
-    <Droppable droppableId={droppableId}>
+    <Droppable 
+      droppableId={droppableId} 
+      isDropDisabled={isDropDisabled}
+      isCombineEnabled={isCombineEnabled}
+      ignoreContainerClipping={ignoreContainerClipping}
+    >
       {(provided) => (
         <div 
           className={className} 
@@ -36,7 +49,16 @@ export const PrintSafeDroppable = ({ droppableId, children, className = "", ...p
 };
 
 // Print-safe Draggable wrapper
-export const PrintSafeDraggable = ({ draggableId, index, children, className = "", ...props }) => {
+export const PrintSafeDraggable = ({ 
+  draggableId, 
+  index, 
+  children, 
+  className = "", 
+  isDragDisabled = false,
+  disableInteractiveElementBlocking = false,
+  shouldRespectForcePress = false,
+  ...props 
+}) => {
   const isPrintMode = usePrintMode();
 
   if (isPrintMode) {
@@ -54,7 +76,13 @@ export const PrintSafeDraggable = ({ draggableId, index, children, className = "
 
   // Render normal Draggable in edit mode
   return (
-    <Draggable draggableId={draggableId} index={index}>
+    <Draggable 
+      draggableId={draggableId} 
+      index={index}
+      isDragDisabled={isDragDisabled}
+      disableInteractiveElementBlocking={disableInteractiveElementBlocking}
+      shouldRespectForcePress={shouldRespectForcePress}
+    >
       {(provided) => (
         <div
           className={className}
