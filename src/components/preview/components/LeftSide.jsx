@@ -3,6 +3,8 @@ import DateRange from "../../utility/DateRange";
 import Language from "../components/Language";
 import Certification from "../components/Certification";
 import dynamic from "next/dynamic";
+import React, { useContext } from "react";
+import { ResumeContext } from "../../builder";
 
 const Droppable = dynamic(
   () => import("react-beautiful-dnd").then((mod) => mod.Droppable),
@@ -14,20 +16,38 @@ const Draggable = dynamic(
 );
 
 const LeftSide = ({ resumeData }) => {
+  const { setResumeData } = useContext(ResumeContext);
+
+  const handleSummaryChange = (e) => {
+    setResumeData({ ...resumeData, summary: e.target.innerText });
+  };
+
   return (
     <div className="col-span-1 space-y-2">
       {resumeData.summary.length > 0 && (
         <div className="mb-1">
-          <h2 className="section-title mb-1 border-b-2 border-gray-300">
+          <h2 className="section-title mb-1 border-b-2 border-gray-300 editable"
+              contentEditable
+              suppressContentEditableWarning
+          >
             Summary
           </h2>
-          <p className="content break-words">{resumeData.summary}</p>
+          <p className="content break-words editable"
+             contentEditable
+             suppressContentEditableWarning
+             onBlur={handleSummaryChange}
+          >
+            {resumeData.summary}
+          </p>
         </div>
       )}
 
       {resumeData.education.length > 0 && (
         <div className="mb-1">
-          <h2 className="section-title mb-1 border-b-2 border-gray-300">
+          <h2 className="section-title mb-1 border-b-2 border-gray-300 editable"
+              contentEditable
+              suppressContentEditableWarning
+          >
             Education
           </h2>
           {resumeData.education.map((item, index) => (
