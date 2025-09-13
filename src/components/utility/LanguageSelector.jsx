@@ -4,7 +4,7 @@ const LanguageSelector = () => {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <div className="fixed top-4 right-4 z-50">
+    <div className="fixed top-4 right-4 z-50 exclude-print">
       <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-2">
         <div className="flex space-x-2">
           <button

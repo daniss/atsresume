@@ -8,6 +8,15 @@
         @apply font-[sans-serif];
     }
 
+    /* ATS-Friendly Font Classes */
+    .font-arial { font-family: Arial, sans-serif; }
+    .font-helvetica { font-family: Helvetica, Arial, sans-serif; }
+    .font-calibri { font-family: Calibri, Arial, sans-serif; }
+    .font-verdana { font-family: Verdana, Arial, sans-serif; }
+    .font-tahoma { font-family: Tahoma, Arial, sans-serif; }
+    .font-times { font-family: 'Times New Roman', Times, serif; }
+    .font-georgia { font-family: Georgia, Times, serif; }
+
     ::-webkit-scrollbar {
         @apply w-2.5 h-2.5;
     }
@@ -72,6 +81,23 @@
 
     .editable{
         @apply hover:bg-gray-100 hover:cursor-text outline-none;
+    }
+
+    /* Template-specific layouts */
+    .template-classic {
+        @apply grid grid-cols-3 gap-6;
+    }
+
+    .template-modern {
+        @apply space-y-6;
+    }
+
+    .template-executive {
+        @apply grid grid-cols-3 gap-6;
+    }
+
+    .template-minimal {
+        @apply space-y-8;
     }
 
 }

@@ -4,18 +4,10 @@ import Language from "../components/Language";
 import Certification from "../components/Certification";
 import { translations } from "../../utility/translations";
 import { useLanguage } from "../../../hooks/useLanguage";
-import dynamic from "next/dynamic";
+import { PrintSafeDroppable, PrintSafeDraggable } from "../../utility/PrintSafeWrapper";
 import React, { useContext } from "react";
 import { ResumeContext } from "../../builder";
-
-const Droppable = dynamic(
-  () => import("react-beautiful-dnd").then((mod) => mod.Droppable),
-  { ssr: false }
-);
-const Draggable = dynamic(
-  () => import("react-beautiful-dnd").then((mod) => mod.Draggable),
-  { ssr: false }
-);
+import ContentEditableSafe from "../../utility/ContentEditableSafe";
 
 const LeftSide = ({ resumeData }) => {
   const { setResumeData } = useContext(ResumeContext);
@@ -26,82 +18,79 @@ const LeftSide = ({ resumeData }) => {
   };
 
   return (
-    <div className="col-span-1 space-y-2">
+    <aside className="col-span-1 space-y-2">
       {resumeData.summary.length > 0 && (
-        <div className="mb-1">
-          <h2 className="section-title mb-1 border-b-2 border-gray-300 editable"
-              contentEditable
-              suppressContentEditableWarning
-          >
+        <section className="mb-1">
+          <ContentEditableSafe className="section-title mb-1 border-b-2 border-gray-300 editable">
             {translations[language].summary}
-          </h2>
-          <p className="content break-words editable"
-             contentEditable
-             suppressContentEditableWarning
-             onBlur={handleSummaryChange}
-          >
+          </ContentEditableSafe>
+          <ContentEditableSafe className="content break-words editable" onBlur={handleSummaryChange}>
             {resumeData.summary}
-          </p>
-        </div>
+          </ContentEditableSafe>
+        </section>
       )}
 
       {resumeData.education.length > 0 && (
-        <div className="mb-1">
-          <h2 className="section-title mb-1 border-b-2 border-gray-300 editable"
-              contentEditable
-              suppressContentEditableWarning
-          >
+        <section className="mb-1">
+          <ContentEditableSafe className="section-title mb-1 border-b-2 border-gray-300 editable">
             {translations[language].education}
-          </h2>
+          </ContentEditableSafe>
           {resumeData.education.map((item, index) => (
-            <div key={index} className="mb-1">
-              <p className="content i-bold">{item.degree}</p>
+            <article key={index} className="mb-1">
+              <h3 className="content i-bold">{item.degree}</h3>
               <p className="content">{item.school}</p>
               <DateRange
                 startYear={item.startYear}
                 endYear={item.endYear}
                 id={`education-start-end-date`}
               />
-            </div>
+            </article>
           ))}
-        </div>
+        </section>
       )}
 
-      <Droppable droppableId="skills" type="SKILLS">
-        {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            {resumeData.skills.map((skill, index) => (
-              <Draggable
-                key={`SKILLS-${index}`}
-                draggableId={`SKILLS-${index}`}
-                index={index}
-              >
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    className={`mb-1 ${
-                      snapshot.isDragging &&
-                      "outline-dashed outline-2 outline-gray-400 bg-white"
-                    }`}
-                  >
-                    <Skills title={skill.title} skills={skill.skills} />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
+      <section>
+        <PrintSafeDroppable droppableId="skills">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {resumeData.skills.map((skill, index) => (
+                <PrintSafeDraggable
+                  key={`SKILLS-${index}`}
+                  draggableId={`SKILLS-${index}`}
+                  index={index}
+                >
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      className={`mb-1 ${
+                        snapshot?.isDragging &&
+                        "outline-dashed outline-2 outline-gray-400 bg-white"
+                      }`}
+                    >
+                      <Skills title={skill.title} skills={skill.skills} />
+                    </div>
+                  )}
+                </PrintSafeDraggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </PrintSafeDroppable>
+      </section>
 
-      <Language title={translations[language].languages} languages={resumeData.languages} />
-      <Certification
-        title={translations[language].certifications}
-        certifications={resumeData.certifications}
-      />
-    </div>
+      <section>
+        <Language title={translations[language].languages} languages={resumeData.languages} />
+      </section>
+
+      <section>
+        <Certification
+          title={translations[language].certifications}
+          certifications={resumeData.certifications}
+        />
+      </section>
+    </aside>
   );
 };
 

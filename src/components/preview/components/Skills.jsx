@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import {ResumeContext} from "../../builder";
 import { translations } from "../../utility/translations";
 import { useLanguage } from "../../../hooks/useLanguage";
+import ContentEditableSafe from "../../utility/ContentEditableSafe";
 
 const Skills = ({ title, skills }) => {
   const { resumeData, setResumeData } = useContext(ResumeContext);
@@ -24,12 +25,12 @@ const Skills = ({ title, skills }) => {
 
   return (
     skills && skills.length > 0 && (
-      <>
-        <h2 className="section-title mb-1 border-b-2 border-gray-300 editable" contentEditable suppressContentEditableWarning onBlur={handleTitleChange}>
+      <div>
+        <ContentEditableSafe className="section-title mb-1 border-b-2 border-gray-300 editable" onBlur={handleTitleChange}>
           {getTranslatedTitle(title)}
-        </h2>
+        </ContentEditableSafe>
         <p className="sub-content">{skills.join(", ")}</p>
-      </>
+      </div>
     )
   );
 };

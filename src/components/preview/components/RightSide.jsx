@@ -3,14 +3,18 @@ import Projects from "./projects/ui/Projects";
 
 const RightSide = ({resumeData}) => {
   return (
-    <div className="col-span-2 space-y-2">
+    <main className="col-span-2 space-y-2">
       {resumeData.workExperience.length > 0 && (
-        <WorkExperiences/>
+        <section>
+          <WorkExperiences/>
+        </section>
       )}
       {resumeData.projects.length > 0 && (
-        <Projects/>
+        <section>
+          <Projects/>
+        </section>
       )}
-    </div>
+    </main>
   );
 };
 
